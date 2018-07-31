@@ -1,0 +1,62 @@
+<html>
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    		
+    $(document).ready(function () {
+    $("#uploadForm").submit(function(e) {
+        e.preventDefault(); 
+        var name = $('#name').val();
+    var description = $('#description').val();
+    var email = $('#email').val();
+    var phone = $('#phone').val();
+    var fd = $("#file")[0].files[0];
+    var result = new FormData();
+    result.append('name',name);
+    result.append('description',description);
+    result.append('email',email);
+    result.append('phone',phone);
+    result.append('imageURL',fd); 
+    $.ajax({
+            url: '/upload',
+            type: "POST",
+            data: result,
+            processData: false, contentType: false,
+            success: function(result){
+                $("#success").html("Huraay, your profile is registered");
+                window.location.href = './success.html';
+            },
+            error: function(er){
+                $("#div1").html("OOPS! sorry there is an error, please try again...");
+                window.location.href = './success.html';
+            }
+    });
+})
+});
+
+    </script>
+</head>
+<body id="success">
+<h2>File Upload</h2>
+
+<form id="uploadForm" enctype="multipart/form-data" method="post" action="">
+    <input type="text" class="form-control" name="name" placeholder="name" id="name" /><br/><br/>
+	<textarea type="text" class="form-control" name="description" placeholder="description" id="description" /></textarea><br/><br/>
+	<input type="email" class="form-control" name="email" placeholder="email" required="true" id="email" /><br/><br/>
+	<input type="text" class="form-control" name="phone" placeholder="phone" required="true" id="phone" /><br/><br/>
+    <input type="file"  name="image" id="file" /><br/><br/>
+    <input type="submit" name="submit" value="submit"  />
+    <p>or sign in with</p>
+
+</form>
+<a class="btn btn-danger" href="/google">google+</a>
+<span id="result"></span>
+</body>
+</html>
